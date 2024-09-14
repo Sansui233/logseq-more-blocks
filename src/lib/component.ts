@@ -21,23 +21,31 @@ export function LsqTemplate<
   F extends CallbackNames = CallbackNames,
   D extends DataProperties = DataProperties,
 >
-  (component: TLsqTemplate<P, F, D>, props: P, callbackNames: F, dataProperties: D) {
+  (
+    component: TLsqTemplate<P, F, D>,
+    props: P,
+    callbackNames: F,
+    dataProperties: D
+  ) {
   return component(props, { callbackNames, dataProperties })
 }
 
 export function renderHTMLString<
   F extends CallbackNames = CallbackNames,
   D extends DataProperties = DataProperties
->(datas: { callbackNames: F, dataProperties: D },
+>(
+  datas: { callbackNames: F, dataProperties: D },
   htmlTemplate: string,
   slots: {
-    id?: string,
-    value?: string,
-    children?: string,
+    id?: string,    // html dom node id
+    value?: string, // html dom node text
+    children?: string, // html dom children nodes text
     bindings?: { // TODO seperate value binding and handler binding to get a better type hints
       [K in keyof Partial<D>]: unknown | $Values<F>
     },
-  }): string {
+  }
+): string {
+
   const template = Handlebars.compile(htmlTemplate)
 
   // render data-ref

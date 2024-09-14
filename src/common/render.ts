@@ -1,19 +1,23 @@
-import MyInput from "../components/TextInput";
+
+import LinkCard from "../components/LinkCard";
+import TextInput, { createTextInput } from "../components/TextInput";
 import { LsqTemplate, TLsqComponentIntrinsicProps, TLsqTemplate } from "../lib/component";
-import { createRenderer } from "../lib/renderer";
+import { createPluginData } from "../lib/plugin-base";
 import { dataAttrs } from "./data-attrs";
 import { handlerNames } from "./handlers";
 
 
-export const pluginData = createRenderer<{
+export const pluginData = createPluginData<{
   content?: string // = payloads.arguments
 }>({
-  name: "plugin-test"
+  name: "mb"
 })
 
 
 export type TMyTemplate<P> = TLsqTemplate<
-  P & TLsqComponentIntrinsicProps, typeof handlerNames, typeof dataAttrs
+  P & TLsqComponentIntrinsicProps,
+  typeof handlerNames,
+  typeof dataAttrs
 >;
 
 
@@ -33,32 +37,45 @@ export const provideRendererUI: TRenderedSlottedHook = (evt) => {
   }
   **/
   const { slot, payload } = evt
-  // the renderer name should be like this: `:plugin-test_dfaoj`. 
+  // the renderer name should be like this: `:plugin-test_component_dfaoj`. 
   // that is pluginData.name_renderId
   // the content elements is split by comma in original text.
   const [rendererName, ...contents] = payload.arguments
 
+  if (!rendererName) return
+
+  const [pluginName, componentName, renderId] = rendererName.split('_')
+
   // if not the current plugin renderer, do nothing
-  if (!rendererName?.startsWith(`:${pluginData.name}`)) return
+  if (pluginName !== pluginData.name) return
+  // if no renderId, do nothing
+  if (!renderId) return
 
   // else, render the plugin UI
   console.debug("onMacroRendererSlotted event", evt)
 
-  const renderId = rendererName.split('_')[1]?.trim()
-  if (!renderId) return
-
-
-  return logseq.provideUI({
-    key: pluginData.genId(renderId), // this is part of the dom id. see keepKey
-    slot, // this var name should be slotid. slot means to insert into editor block. Otherwise, the plugin window will float. <div> with slot__id will wrapper outside your plugin window
-    reset: true,
-    template: provideUiTemplate(MyInput, {
-      renderId,
-      content: contents.length !== 0 ? contents.join(",") : "Hi",
-      blockUuid: payload.uuid
+  // dispatch according to components
+  if (componentName === TextInput.name) {
+    return logseq.provideUI({
+      key: pluginData.genId(TextInput.name, renderId), // this is part of the dom id. see keepKey
+      slot, // this var name should be slotid. slot means to insert into editor block. Otherwise, the plugin window will float. <div> with slot__id will wrapper outside your plugin window
+      reset: true,
+      template: provideUiTemplate(createTextInput, {
+        renderId,
+        content: contents.length !== 0 ? contents.join(",") : "",
+        blockUuid: payload.uuid
+      })
     })
-  })
-}// bind handler and data types
+  } else if (componentName === LinkCard.name) {
+    // return logseq.provideUI({
+    //   key: pluginData.genId(LinkCard.name, renderId),
+    //   slot, 
+    //   reset: true,
+    //   template: provideUiTemplate()
+
+    // })
+  }
+}
 
 export function provideUiTemplate<P extends TLsqComponentIntrinsicProps>(myTemplate: TMyTemplate<P>, props: P) {
   // this one will render all handlers and data attrs in a single component

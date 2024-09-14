@@ -2,7 +2,8 @@ import '@logseq/libs'
 import { model } from './common/handlers'
 import { provideRendererUI } from './common/render'
 import { style } from './common/style'
-import MyInput from './components/TextInput'
+import LinkCard from './components/LinkCard'
+import TextInput from './components/TextInput'
 
 const genRandomStr = () => Math.random().
   toString(36).
@@ -17,13 +18,16 @@ async function main() {
   logseq.provideStyle(style) // prepare css style
   logseq.App.onMacroRendererSlotted(provideRendererUI) // render on this event
 
-  logseq.Editor.registerSlashCommand('🖊 WYSIWYG', async () => {
+  logseq.Editor.registerSlashCommand('More Block: WYSIWYG block', async () => {
     await logseq.Editor.insertAtEditingCursor(
-      MyInput.slotText(genRandomStr()))
+      TextInput.slotText(genRandomStr()))
   })
-  logseq.Editor.registerSlashCommand('More Block: Card', async () => {
-
-  })
+  logseq.Editor.registerSlashCommand('More Block: LinkCard', async () => {
+    await logseq.Editor.insertAtEditingCursor(
+      LinkCard.slotText(genRandomStr(), LinkCard.defaultSlot)
+    )
+  }
+  )
 }
 
 // run on logseq start

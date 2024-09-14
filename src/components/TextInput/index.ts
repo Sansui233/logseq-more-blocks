@@ -2,15 +2,17 @@ import { pluginData, TMyTemplate } from "../../common/render";
 import { renderHTMLString } from "../../lib/component";
 import htmlTemplateString from "./index.html?raw";
 
+const name = "textinput"
+
 type Props = {
   renderId: string,
   content: string,
   blockUuid: string,
 }
 
-const myInputConstructor: TMyTemplate<Props> = ({ content, blockUuid, renderId }, datas) => {
+const createTextInput: TMyTemplate<Props> = ({ content, blockUuid, renderId }, datas) => {
   return renderHTMLString(datas, htmlTemplateString, {
-    id: pluginData.genId("myid"),
+    id: pluginData.genId(name, "myid"),
     value: content,
     bindings: {
       renderId,
@@ -21,18 +23,16 @@ const myInputConstructor: TMyTemplate<Props> = ({ content, blockUuid, renderId }
   })
 }
 
-const name = "mb-input"
 
-const MyInput = Object.assign(myInputConstructor, {
-  slotText: (
-    renderId?: string,
-    slotContent?: string
-  ) => {
-    const idSuffix = renderId ? "_" + renderId : ""
-    return "{{renderer :" + name + idSuffix + slotContent + "}}"
+const TextInput = {
+  name,
+  slotText: (renderId?: string, slotContent?: string) => {
+    return "{{renderer " + pluginData.name + "_" + name + (renderId ? "_" + renderId : "")
+      + "," + (slotContent ? slotContent : "Hi")
+      + "}}"
   }
-})
+}
 
+export { createTextInput };
 
-
-export default MyInput
+export default TextInput
