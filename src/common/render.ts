@@ -16,13 +16,6 @@ export type TMyTemplate<P> = TLsqTemplate<
   P & TLsqComponentIntrinsicProps, typeof handlerNames, typeof dataAttrs
 >;
 
-export function provideUiTemplate<P extends TLsqComponentIntrinsicProps>(myTemplate: TMyTemplate<P>, props: P) {
-  // this one will render all handlers and data attrs in a single component
-  // Lsq  provide only one model for every plugin so
-  // you have to dispatch behaviors for different renderer in event handler
-  return LsqTemplate(myTemplate, props, handlerNames, dataAttrs);
-}
-
 
 
 type TRenderedSlottedHook = Parameters<typeof logseq.App.onMacroRendererSlotted>[0]
@@ -66,3 +59,10 @@ export const provideRendererUI: TRenderedSlottedHook = (evt) => {
     })
   })
 }// bind handler and data types
+
+export function provideUiTemplate<P extends TLsqComponentIntrinsicProps>(myTemplate: TMyTemplate<P>, props: P) {
+  // this one will render all handlers and data attrs in a single component
+  // Lsq  provide only one model for every plugin so
+  // you have to dispatch behaviors for different renderer in event handler
+  return LsqTemplate(myTemplate, props, handlerNames, dataAttrs);
+}

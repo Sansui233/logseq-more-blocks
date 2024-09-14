@@ -1,6 +1,6 @@
 import { ModelCallbacks } from "@logseq/libs"
+import MyInput from "../components/TextInput"
 import { TNodeData } from "./data-attrs"
-import { pluginData } from "./render"
 
 export const model: ModelCallbacks<"handleInput" | "handleFocusOut", TNodeData> = {
   handleInput: async (evt) => {
@@ -18,9 +18,9 @@ export const model: ModelCallbacks<"handleInput" | "handleFocusOut", TNodeData> 
     if (block) {
       logseq.Editor.updateBlock(
         evt.dataset.blockUuid,
-        pluginData.slotText(
+        MyInput.slotText(
           evt.dataset.renderId,
-          { content: evt.value }
+          evt.value
         )
       )
       console.debug("handleFocusOut new", block.content)

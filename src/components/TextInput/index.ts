@@ -8,7 +8,7 @@ type Props = {
   blockUuid: string,
 }
 
-const MyInput: TMyTemplate<Props> = ({ content, blockUuid, renderId }, datas) => {
+const myInputConstructor: TMyTemplate<Props> = ({ content, blockUuid, renderId }, datas) => {
   return renderHTMLString(datas, htmlTemplateString, {
     id: pluginData.genId("myid"),
     value: content,
@@ -20,5 +20,19 @@ const MyInput: TMyTemplate<Props> = ({ content, blockUuid, renderId }, datas) =>
     }
   })
 }
+
+const name = "mb-input"
+
+const MyInput = Object.assign(myInputConstructor, {
+  slotText: (
+    renderId?: string,
+    slotContent?: string
+  ) => {
+    const idSuffix = renderId ? "_" + renderId : ""
+    return "{{renderer :" + name + idSuffix + slotContent + "}}"
+  }
+})
+
+
 
 export default MyInput
