@@ -1,0 +1,13 @@
+{
+  "name": "logseq-live-table",
+  "version": "0.0.1",
+  "description": "haha",
+  "author": "sansui233",
+  "license": "MIT",
+  "logseq": {
+    "id": "logseq-live-table",
+    "title": "logseq-live-table",
+    "main": "./index.html",
+    "icon": "./logo.png"
+  }
+}
