@@ -25,6 +25,7 @@ export const model: ModelCallbacks<"handleInput" | "handleFocusOut" | "handleCli
       console.error("[more blocks] renderId missing", evt)
       return
     }
+
     // dispatch solutions
     if (componentName === TextInput.name) {
       // sync slot block
