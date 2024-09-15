@@ -12,7 +12,7 @@ type Props = {
 
 const createTextInput: TMyTemplate<Props> = ({ content, blockUuid, renderId }, datas) => {
   return renderHTMLString(datas, htmlTemplateString, {
-    id: pluginData.genId(name, "myid"),
+    id: pluginData.genId(name, "dom_" + renderId),
     value: content,
     bindings: {
       renderId,

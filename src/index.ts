@@ -18,16 +18,16 @@ async function main() {
   logseq.provideStyle(style) // prepare css style
   logseq.App.onMacroRendererSlotted(provideRendererUI) // render on this event
 
-  logseq.Editor.registerSlashCommand('More Block: WYSIWYG block', async () => {
-    await logseq.Editor.insertAtEditingCursor(
-      TextInput.slotText(genRandomStr()))
-  })
-  logseq.Editor.registerSlashCommand('More Block: LinkCard', async () => {
+  logseq.Editor.registerSlashCommand('🔷 More Blocks: LinkCard', async () => {
     await logseq.Editor.insertAtEditingCursor(
       LinkCard.slotText(genRandomStr(), LinkCard.defaultSlot)
     )
   }
   )
+  logseq.Editor.registerSlashCommand('🔷 More Blocks: One line WYSIWYG (Experimantal)', async () => {
+    await logseq.Editor.insertAtEditingCursor(
+      TextInput.slotText(genRandomStr()))
+  })
 }
 
 // run on logseq start
