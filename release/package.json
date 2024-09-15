@@ -1,12 +1,13 @@
 {
-  "name": "logseq-live-table",
+  "name": "logseq-more-blocks",
   "version": "0.0.1",
-  "description": "haha",
+  "description": "for fun!",
   "author": "sansui233",
   "license": "MIT",
+
   "logseq": {
-    "id": "logseq-live-table",
-    "title": "logseq-live-table",
+    "id": "logseq-more-blocks",
+    "title": "More Blocks",
     "main": "./index.html",
     "icon": "./logo.png"
   }

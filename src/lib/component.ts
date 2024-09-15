@@ -40,26 +40,28 @@ export function renderHTMLString<
     id?: string,    // html dom node id
     value?: string, // html dom node text
     children?: string, // html dom children nodes text
-    bindings?: { // TODO seperate value binding and handler binding to get a better type hints
+    dataBindings?: { // TODO seperate value binding and handler binding to get a better type hints
       [K in keyof Partial<D>]: unknown | $Values<F>
     },
+    [k: string]: unknown
   }
 ): string {
 
-  const template = Handlebars.compile(htmlTemplate)
+  const { dataBindings, ...properties } = slots
 
   // render data-ref
   let bindingStr = ""
-  if (slots.bindings) {
-    const arr = Object.keys(slots.bindings).map(k => `${datas.dataProperties[k]}="${slots.bindings![k]}"`) // ts compiler bug here
+  if (slots.dataBindings) {
+    const arr = Object.keys(slots.dataBindings).map(k => `${datas.dataProperties[k]}="${slots.dataBindings![k]}"`) // ts compiler bug here
     bindingStr = " " + arr.join(" ") + " "
   }
 
-  return template({
-    id: slots.id,
-    value: slots.value,
-    children: slots.children,
-    bindings: new Handlebars.SafeString(bindingStr),
-  })
+  const template = Handlebars.compile(htmlTemplate)
+
+  return template(
+    Object.assign(properties, {
+      dataBindings: new Handlebars.SafeString(bindingStr),
+    })
+  )
 
 }

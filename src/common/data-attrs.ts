@@ -4,8 +4,10 @@
 export const dataAttrs = {
   renderId: 'data-render-id',
   blockUuid: 'data-block-uuid',
+  slotBlockUuid: 'data-slot-block-uuid',
   onInput: 'data-on-input',
   onFocusOut: 'data-on-focusout',
+  onClick: 'data-on-click',
 } as const
 
 // data type fetch from logseq event.dataset

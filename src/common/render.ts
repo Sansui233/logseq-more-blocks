@@ -1,6 +1,6 @@
 
 import LinkCard from "../components/LinkCard";
-import TextInput, { createTextInput } from "../components/TextInput";
+import TextInput from "../components/TextInput";
 import { LsqTemplate, TLsqComponentIntrinsicProps, TLsqTemplate } from "../lib/component";
 import { createPluginData } from "../lib/plugin-base";
 import { dataAttrs } from "./data-attrs";
@@ -52,20 +52,12 @@ export const provideRendererUI: TRenderedSlottedHook = (evt) => {
   if (!renderId) return
 
   // else, render the plugin UI
-  console.debug("onMacroRendererSlotted event", evt)
+  // console.debug("onMacroRendererSlotted event", evt)
 
   // dispatch according to components
   if (componentName === TextInput.name) {
-    return logseq.provideUI({
-      key: pluginData.genId(TextInput.name, renderId), // this is part of the dom id. see keepKey
-      slot, // this var name should be slotid. slot means to insert into editor block. Otherwise, the plugin window will float. <div> with slot__id will wrapper outside your plugin window
-      reset: true,
-      template: provideUiTemplate(createTextInput, {
-        renderId,
-        content: contents.length !== 0 ? contents.join(",") : "",
-        blockUuid: payload.uuid
-      })
-    })
+    return TextInput.provideSlotUi(renderId, slot, contents, payload.uuid)
+
   } else if (componentName === LinkCard.name) {
     // return logseq.provideUI({
     //   key: pluginData.genId(LinkCard.name, renderId),
